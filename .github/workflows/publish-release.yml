@@ -5,8 +5,8 @@ on:
     tags:
       - '*.*.*' # git tag -a v0.0.5 -m 'version 0.0.5' git push --tags
 jobs:
-  publish-release:
-    runs-on: centos-lastest  # Centos 7 x86_64 bbr
+  publish-release:     
+    runs-on: ubuntu-latest # runs-on: Centos 7 x86_64 bbr
     steps:
       # checkout 代码
       - uses: actions/checkout@v2
