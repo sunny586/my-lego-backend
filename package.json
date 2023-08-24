@@ -21,7 +21,7 @@
     "lint": "eslint . --ext .ts",
     "clean": "ets clean",
     "build:template:dev": "npx webpack --config webpack/webpack.config.js",
-    "build:template:prod": "npx webpack --config webpack/webpack.config.js --env production && npm run upload",
+    "build:template:prod": "npx webpack --config webpack/webpack.config.js --env production",
     "upload": "node webpack/uploadToOSS.js",
     "release": "release-it"
   },
