@@ -82,7 +82,7 @@ jobs:
             docker-compose -f docker-compose-online.yml down
             docker-compose -f docker-compose-online.yml up -d
             rm -rf .env
-            docker logout registry.cn-shen zhen.aliyuncs.com 
+            docker logout registry.cn-shenzhen.aliyuncs.com 
 
 
 
