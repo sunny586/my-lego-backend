@@ -79,6 +79,7 @@ jobs:
           script: |
             docker login --username=${{secrets.ACR_USERNAME}} --password=${{secrets.ACR_PASSWORD}} registry.cn-shenzhen.aliyuncs.com
             cd ~/lego-backend/
+            cat docker-compose-online.yml
             docker-compose -f docker-compose-online.yml down
             docker-compose -f docker-compose-online.yml up -d
             rm -rf .env
