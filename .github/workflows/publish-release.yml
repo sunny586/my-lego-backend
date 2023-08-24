@@ -6,7 +6,7 @@ on:
       - 'v*.*.*'
 jobs:
   publish-release:
-    runs-on: ubuntu-latest
+    runs-on: centos-lastest  # Centos 7 x86_64 bbr
     steps:
       # checkout 代码
       - uses: actions/checkout@v2
@@ -30,16 +30,16 @@ jobs:
       - name: Login to Aliyun Container Registry (ACR)
         uses: aliyun/acr-login@v1
         with:
-          login-server: https://registry.cn-hangzhou.aliyuncs.com
-          region-id: cn-hangzhou
+          login-server: https://registry.cn-shenzhen.aliyuncs.com
+          region-id: cn-shenzhen
           username: "${{ secrets.ACR_USERNAME }}"
           password: "${{ secrets.ACR_PASSWORD }}"
       # 使用正确的github tag 对应ACR tag 进行 docker build
       - name: Build image for ACR docker
-        run: docker build --tag "registry.cn-hangzhou.aliyuncs.com/vikingmute/lego:${{github.ref_name}}" .
+        run: docker build --tag "registry.cn-shenzhen.aliyuncs.com/zhangyu586/lego:${{github.ref_name}}" .
       # 使用标记的 tag 进行 push
       - name: Push Image to ACR
-        run: docker push registry.cn-hangzhou.aliyuncs.com/vikingmute/lego:${{github.ref_name}} 
+        run: docker push registry.cn-shenzhen.aliyuncs.com/zhangyu586/lego:${{github.ref_name}} 
       # 查找 docker-compose-online 文件 并且完成版本替换
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
@@ -77,12 +77,12 @@ jobs:
           # 启动服务 docker-compose up 
           # 清理工作
           script: |
-            docker login --username=${{secrets.ACR_USERNAME}} --password=${{secrets.ACR_PASSWORD}} registry.cn-hangzhou.aliyuncs.com
+            docker login --username=${{secrets.ACR_USERNAME}} --password=${{secrets.ACR_PASSWORD}} registry.cn-shenzhen.aliyuncs.com
             cd ~/lego-backend/
             docker-compose -f docker-compose-online.yml down
             docker-compose -f docker-compose-online.yml up -d
             rm -rf .env
-            docker logout registry.cn-hangzhou.aliyuncs.com 
+            docker logout registry.cn-shen zhen.aliyuncs.com 
 
 
 
