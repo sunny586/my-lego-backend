@@ -33,34 +33,34 @@ export default class UserController extends Controller {
     return errors
   }
 
-  @inputValidate(sendCodeRules, 'userValidateFail')
-  async sendVeriCode() {
-    const { ctx, app } = this
-    const { phoneNumber } = ctx.request.body
-    // 获取 redis 的数据
-    // phoneVeriCode-1331111222
-    const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`)
-    // 判断是否存在
-    if (preVeriCode) {
-      return ctx.helper.error({ ctx, errorType: 'sendVeriCodeFrequentlyFailInfo' })
-    }
-    // [0 - 1)
-    // [0 - 1) * 9000 = [0 - 9000)
-    // [0 - 9000) + 1000 = [1000, 10000)
-    const veriCode = (Math.floor(((Math.random() * 9000) + 1000))).toString()
-    // 发送短信
-    // 判断是否为生产环境
-    if (app.config.env === 'prod') {
-      const resp = await this.service.user.sendSMS(phoneNumber, veriCode)
-      if (resp.body.code !== 'OK') {
-        return ctx.helper.error({ ctx, errorType: 'sendVeriCodeError' })
-      }
-    }
-    console.log(app.config.aliCloudConfig)
-    await app.redis.set(`phoneVeriCode-${phoneNumber}`, veriCode, 'ex', 60)
-    ctx.helper.success({ ctx, msg: '验证码发送成功',
-      res: app.config.env === 'local' ? { veriCode } : null })
-  }
+  // @inputValidate(sendCodeRules, 'userValidateFail')
+  // async sendVeriCode() {
+  //   const { ctx, app } = this
+  //   const { phoneNumber } = ctx.request.body
+  //   // 获取 redis 的数据
+  //   // phoneVeriCode-1331111222
+  //   const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`)
+  //   // 判断是否存在
+  //   if (preVeriCode) {
+  //     return ctx.helper.error({ ctx, errorType: 'sendVeriCodeFrequentlyFailInfo' })
+  //   }
+  //   // [0 - 1)
+  //   // [0 - 1) * 9000 = [0 - 9000)
+  //   // [0 - 9000) + 1000 = [1000, 10000)
+  //   const veriCode = (Math.floor(((Math.random() * 9000) + 1000))).toString()
+  //   // 发送短信
+  //   // 判断是否为生产环境
+  //   if (app.config.env === 'prod') {
+  //     const resp = await this.service.user.sendSMS(phoneNumber, veriCode)
+  //     if (resp.body.code !== 'OK') {
+  //       return ctx.helper.error({ ctx, errorType: 'sendVeriCodeError' })
+  //     }
+  //   }
+  //   console.log(app.config.aliCloudConfig)
+  //   await app.redis.set(`phoneVeriCode-${phoneNumber}`, veriCode, 'ex', 60)
+  //   ctx.helper.success({ ctx, msg: '验证码发送成功',
+  //     res: app.config.env === 'local' ? { veriCode } : null })
+  // }
 
   @inputValidate(userCreateRules, 'loginValidateFail')
   async loginByEmail() {
@@ -85,36 +85,36 @@ export default class UserController extends Controller {
     ctx.helper.success({ ctx, res: { token }, msg: '登录成功' })
   }
 
-  @inputValidate(userPhoneCreateRules, 'userValidateFail')
-  async loginByCellphone() {
-    const { ctx, app } = this
-    const { phoneNumber, veriCode } = ctx.request.body
-    // 验证码是否正确
-    const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`)
-    if (veriCode !== preVeriCode) {
-      return ctx.helper.error({ ctx, errorType: 'loginVeriCodeIncorrectFailInfo' })
-    }
-    const token = await ctx.service.user.loginByCellphone(phoneNumber)
-    ctx.helper.success({ ctx, res: { token } })
-  }
+  // @inputValidate(userPhoneCreateRules, 'userValidateFail')
+  // async loginByCellphone() {
+  //   const { ctx, app } = this
+  //   const { phoneNumber, veriCode } = ctx.request.body
+  //   // 验证码是否正确
+  //   const preVeriCode = await app.redis.get(`phoneVeriCode-${phoneNumber}`)
+  //   if (veriCode !== preVeriCode) {
+  //     return ctx.helper.error({ ctx, errorType: 'loginVeriCodeIncorrectFailInfo' })
+  //   }
+  //   const token = await ctx.service.user.loginByCellphone(phoneNumber)
+  //   ctx.helper.success({ ctx, res: { token } })
+  // }
 
-  async oauth() {
-    const { app, ctx } = this
-    const { cid, redirectURL } = app.config.giteeOauthConfig
-    ctx.redirect(`https://gitee.com/oauth/authorize?client_id=${cid}&redirect_uri=${redirectURL}&response_type=code`)
-  }
+  // async oauth() {
+  //   const { app, ctx } = this
+  //   const { cid, redirectURL } = app.config.giteeOauthConfig
+  //   ctx.redirect(`https://gitee.com/oauth/authorize?client_id=${cid}&redirect_uri=${redirectURL}&response_type=code`)
+  // }
 
-  async oauthByGitee() {
-    const { ctx } = this
-    const { code } = ctx.request.query
-    try {
-      const token = await ctx.service.user.loginByGitee(code)
-      await ctx.render('success.nj', { token })
-      // ctx.helper.success({ ctx, res: { token } })
-    } catch (e) {
-      return ctx.helper.error({ ctx, errorType: 'giteeOauthError' })
-    }
-  }
+  // async oauthByGitee() {
+  //   const { ctx } = this
+  //   const { code } = ctx.request.query
+  //   try {
+  //     const token = await ctx.service.user.loginByGitee(code)
+  //     await ctx.render('success.nj', { token })
+  //     // ctx.helper.success({ ctx, res: { token } })
+  //   } catch (e) {
+  //     return ctx.helper.error({ ctx, errorType: 'giteeOauthError' })
+  //   }
+  // }
 
   async show() {
     const { ctx, service, app } = this

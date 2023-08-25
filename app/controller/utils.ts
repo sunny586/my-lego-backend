@@ -32,54 +32,54 @@ export default class UtilsController extends Controller {
       ctx.helper.error({ ctx, errorType: 'h5WorkNotExistError' })
     }
   }
-  async uploadToOSS() {
-    const { ctx, app } = this
-    const stream = await ctx.getFileStream()
-    // logo-backend /imooc-test/**.ext
-    const savedOSSPath = join('imooc-test', nanoid(6) + extname(stream.filename))
-    try {
-      const result = await ctx.oss.put(savedOSSPath, stream)
-      app.logger.info(result)
-      const { name, url } = result
-      ctx.helper.success({ ctx, res: { name, url } })
-    } catch (e) {
-      await sendToWormhole(stream)
-      ctx.helper.error({ ctx, errorType: 'imageUploadFail' })
-    }
-    // get stream saved to local file
-    // file upload to OSS
-    // delete local file
+  // async uploadToOSS() {
+  //   const { ctx, app } = this
+  //   const stream = await ctx.getFileStream()
+  //   // logo-backend /imooc-test/**.ext
+  //   const savedOSSPath = join('imooc-test', nanoid(6) + extname(stream.filename))
+  //   try {
+  //     const result = await ctx.oss.put(savedOSSPath, stream)
+  //     app.logger.info(result)
+  //     const { name, url } = result
+  //     ctx.helper.success({ ctx, res: { name, url } })
+  //   } catch (e) {
+  //     await sendToWormhole(stream)
+  //     ctx.helper.error({ ctx, errorType: 'imageUploadFail' })
+  //   }
+  //   // get stream saved to local file
+  //   // file upload to OSS
+  //   // delete local file
 
-    // get stream upload to OSS
-  }
-  async uploadMutipleFiles() {
-    const { ctx, app } = this
-    const { fileSize } = app.config.multipart
-    const parts = ctx.multipart({ limits: { fileSize: fileSize as number } })
-    // { urls: [xxx, xxx ]}
-    const urls: string[] = []
-    let part: FileStream | string[]
-    while ((part = await parts())) {
-      if (Array.isArray(part)) {
-        app.logger.info(part)
-      } else {
-        try {
-          const savedOSSPath = join('imooc-test', nanoid(6) + extname(part.filename))
-          const result = await ctx.oss.put(savedOSSPath, part)
-          const { url } = result
-          urls.push(url)
-          if (part.truncated) {
-            await ctx.oss.delete(savedOSSPath)
-            return ctx.helper.error({ ctx, errorType: 'imageUploadFileSizeError', error: `Reach fileSize limit ${fileSize} bytes` })
-          }
-        } catch (e) {
-          await sendToWormhole(part)
-          ctx.helper.error({ ctx, errorType: 'imageUploadFail' })
-        }
-      }
-    }
-    ctx.helper.success({ ctx, res: { urls } })
-  }
+  //   // get stream upload to OSS
+  // }
+  // async uploadMutipleFiles() {
+  //   const { ctx, app } = this
+  //   const { fileSize } = app.config.multipart
+  //   const parts = ctx.multipart({ limits: { fileSize: fileSize as number } })
+  //   // { urls: [xxx, xxx ]}
+  //   const urls: string[] = []
+  //   let part: FileStream | string[]
+  //   while ((part = await parts())) {
+  //     if (Array.isArray(part)) {
+  //       app.logger.info(part)
+  //     } else {
+  //       try {
+  //         const savedOSSPath = join('imooc-test', nanoid(6) + extname(part.filename))
+  //         const result = await ctx.oss.put(savedOSSPath, part)
+  //         const { url } = result
+  //         urls.push(url)
+  //         if (part.truncated) {
+  //           await ctx.oss.delete(savedOSSPath)
+  //           return ctx.helper.error({ ctx, errorType: 'imageUploadFileSizeError', error: `Reach fileSize limit ${fileSize} bytes` })
+  //         }
+  //       } catch (e) {
+  //         await sendToWormhole(part)
+  //         ctx.helper.error({ ctx, errorType: 'imageUploadFail' })
+  //       }
+  //     }
+  //   }
+  //   ctx.helper.success({ ctx, res: { urls } })
+  // }
   uploadFileUseBusBoy() {
     const { ctx, app } = this
     return new Promise<string[]>(resolve => {

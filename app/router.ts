@@ -9,19 +9,20 @@ export default (app: Application) => {
   // const jwtMiddleware = app.jwt as any
   // const jwtMiddleware = app.middleware.jwt(app.config.jwt)
 
-
-  router.get('/ping', controller.home.index);
   // router.get('/test/:id', controller.test.index)
   // router.post('/test/:id', controller.test.index)
   // router.get('/dog', logger, controller.test.getDog)
   router.prefix('/api')
+  router.get('/ping', controller.home.index);
   router.post('/users/create', controller.user.createByEmail)
   router.get('/users/getUserInfo', controller.user.show)
   router.post('/users/loginByEmail', controller.user.loginByEmail)
-  router.post('/users/genVeriCode', controller.user.sendVeriCode)
-  router.post('/users/loginByPhoneNumber', controller.user.loginByCellphone)
-  router.get('/users/passport/gitee', controller.user.oauth)
-  router.get('/users/passport/gitee/callback', controller.user.oauthByGitee)
+
+  // aliyun
+  // router.post('/users/genVeriCode', controller.user.sendVeriCode)
+  // router.post('/users/loginByPhoneNumber', controller.user.loginByCellphone)
+  // router.get('/users/passport/gitee', controller.user.oauth)
+  // router.get('/users/passport/gitee/callback', controller.user.oauthByGitee)
 
   router.post('/works', controller.work.createWork)
   router.post('/works/copy/:id', controller.work.copyWork)
@@ -38,7 +39,7 @@ export default (app: Application) => {
   // fileUploadByStream
   router.post('/utils/fileUploadByStream', controller.utils.fileUploadByStream)
 
-  router.post('/utils/upload-img', controller.utils.uploadMutipleFiles)
+  // router.post('/utils/upload-img', controller.utils.uploadMutipleFiles)
   router.get('/pages/p/:idAndUuid', controller.utils.renderH5Page)
   router.post('/channel', controller.work.createChannel)
   router.get('/channel/getWorkChannels/:id', controller.work.getWorkChannel)

@@ -7,7 +7,7 @@ services:
       - '.docker-volumes/mongo/data:/data/db'
       - './mongo-entrypoint/:/docker-entrypoint-initdb.d/'
     ports:
-      - 27018:27017
+      - 27017:27017
     env_file:
       - .env
   lego-redis:
@@ -20,6 +20,9 @@ services:
     env_file:
       - .env
   lego-backend:
+    depends_on:
+      - lego-mongo
+      - lego-redis
     image: registry.cn-shenzhen.aliyuncs.com/zhangyu586/lego:{{tag}}
     container_name: lego-backend
     ports:
