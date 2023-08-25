@@ -76,14 +76,16 @@ jobs:
           # 停止服务 docker-compose down
           # 启动服务 docker-compose up 
           # 清理工作
+          # docker-compose -f docker-compose-online.yml down
+          # docker-compose -f docker-compose-online.yml up -d
+          # rm -rf .env
+          # docker logout registry.cn-shenzhen.aliyuncs.com 
           script: |
             docker login --username=${{secrets.ACR_USERNAME}} --password=${{secrets.ACR_PASSWORD}} registry.cn-shenzhen.aliyuncs.com
             cd ~/lego-backend/
             cat docker-compose-online.yml
-            docker-compose -f docker-compose-online.yml down
-            docker-compose -f docker-compose-online.yml up -d
-            rm -rf .env
-            docker logout registry.cn-shenzhen.aliyuncs.com 
+
+            
 
 
 
