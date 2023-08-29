@@ -26,6 +26,6 @@ services:
     image: registry.cn-shenzhen.aliyuncs.com/zhangyu586/lego:{{tag}}
     container_name: lego-backend
     ports:
-     - 7001:7001
+     - 80:7001
     env_file:
       - .env
