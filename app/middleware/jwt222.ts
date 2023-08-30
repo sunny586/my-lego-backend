@@ -25,7 +25,6 @@ function getTokenValue(ctx: Context) {
 }
 export default (options: EggAppConfig['jwt']) => {
   return async (ctx: Context, next: () => Promise<any>) => {
-    console.log(123456)
     // 从 header 获取对应的 token
     const token = getTokenValue(ctx)
     if (!token) {
