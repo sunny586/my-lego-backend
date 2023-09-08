@@ -2,7 +2,7 @@ import { EggAppConfig, PowerPartial } from 'egg';
 
 export default () => {
   const config: PowerPartial<EggAppConfig> = {};
-  config.baseUrl = 'prod.url'
+  config.baseUrl = 'http://sunny586.com'
   config.mongoose = {
     url: 'mongodb://lego-mongo:27017/lego',
     options: {
