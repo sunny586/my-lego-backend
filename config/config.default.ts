@@ -18,7 +18,7 @@ export default (appInfo: EggAppInfo) => {
     xframe: {
       enable: true,
       // 'SAMEORIGIN', 'DENY' or 'ALLOW-FROM http://example.jp'
-      value: 'SAMEORIGIN'
+      value: 'ALLOW-FROM'
     },
     domainWhiteList: [ 'http://localhost:8080' ]
   }
