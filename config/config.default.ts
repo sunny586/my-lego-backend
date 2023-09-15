@@ -15,6 +15,11 @@ export default (appInfo: EggAppInfo) => {
     csrf: {
       enable: false
     },
+    xframe: {
+      enable: true,
+      // 'SAMEORIGIN', 'DENY' or 'ALLOW-FROM http://example.jp'
+      value: 'SAMEORIGIN'
+    },
     domainWhiteList: [ 'http://localhost:8080' ]
   }
   config.view = {
