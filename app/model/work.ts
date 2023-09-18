@@ -34,7 +34,7 @@ function initWorkModel(app: Application) {
     desc: { type: String },
     coverImg: { type: String },
     content: { type: Object },
-    isTemplate: { type: Boolean },
+    isTemplate: { type: Boolean, default: false },
     isPublic: { type: Boolean },
     isHot: { type: Boolean },
     author: { type: String, required: true },
