@@ -65,10 +65,12 @@ export default (appInfo: EggAppInfo) => {
       { prefix: '/uploads', dir: join(appInfo.baseDir, 'uploads') }
     ]
   }
-  // config.cors = {
-  //   origin: 'http://localhost:8080',
-  //   allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH'
-  // }
+
+  config.cors = {
+    origin: 'http://localhost:8080',
+    allowMethods: 'GET,HEAD,PUT,OPTIONS,POST,DELETE,PATCH'
+  }
+
   config.oss = {
     client: {
       accessKeyId: process.env.ALC_ACCESS_KEY || '',
